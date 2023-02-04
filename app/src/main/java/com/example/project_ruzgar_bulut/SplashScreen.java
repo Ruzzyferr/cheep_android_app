@@ -1,58 +1,50 @@
 package com.example.project_ruzgar_bulut;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    VideoView videoView;
-    ImageView imageView;
+    ImageView logo;
+    TextView splashName, slogan;
+    Animation top, bottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(1);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-        setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.splash_screen);
 
-        videoView = findViewById(R.id.viewVideo);
-        imageView = findViewById(R.id.image1);
+        logo = findViewById(R.id.splashLogo);
+        splashName = findViewById(R.id.splashName);
+        slogan = findViewById(R.id.slogan);
 
-        String path = "android.resource://com.example.project_ruzgar_bulut/" + R.raw.cheep;
+        top = AnimationUtils.loadAnimation(this,R.anim.top);
+        bottom = AnimationUtils.loadAnimation(this,R.anim.bottom);
 
-        Uri uri = Uri.parse(path);
-        videoView.setVideoURI(uri);
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.start();
-                imageView.setVisibility(View.GONE);
-            }
-        });
+        logo.setAnimation(top);
+        splashName.setAnimation(bottom);
+        slogan.setAnimation(bottom);
 
-        final Runnable r = new Runnable(){
-
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
+                Intent intent = new Intent(SplashScreen.this,HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
-        };
+        },2500);
 
-        new Handler().postDelayed(r,4000);
+
 
 
 
